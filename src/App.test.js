@@ -1,5 +1,11 @@
-import { getAvailability } from './logic';
+import { getProfileData } from './logic';
 
-test('Vérifie que la disponibilité est correcte pour 2026', () => {
-    expect(getAvailability(2026)).toBe("Disponible pour stage de fin d'étude");
+test('Vérifie l’identité du propriétaire du portfolio', () => {
+    const data = getProfileData();
+    expect(data.name).toBe("Ziad FREIJ"); 
+});
+
+test('Vérifie le format de l’email de contact', () => {
+    const data = getProfileData();
+    expect(data.email).toContain("@"); 
 });

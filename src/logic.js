@@ -1,4 +1,7 @@
-export const getAvailability = (year) => {
-    if (year < 2025) return "Étudiant à l'ISEN";
-    return "Disponible pour stage";
+export const getProfileData = () => {
+    return {
+        name: "Ziad FREIJ",
+        email: "ziadfr2002@gmail.com",
+        status: "Stage trouvé - En poste"
+    };
 };
