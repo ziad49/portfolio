@@ -1,6 +1,6 @@
 const getProfileData = () => {
     return {
-        name: "Ziad FREIJ",
+        name: "Ziad REIJ",
         email: "ziadfr2002@gmail.com",
         status: "Stage trouvé - En poste"
     };
