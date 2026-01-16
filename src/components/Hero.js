@@ -9,7 +9,7 @@ const Hero = () => {
     <section className="hero-container">
       <div className="hero-content-wrapper">
         <div className="hero-text">
-          <h1 className="name-title">Ziad FREIJ</h1>
+          <h1 className="name-title">Ziad REIJ</h1>
           <h2 className="job-subtitle">Étudiant en école d’ingénieur</h2>
           
           {/* <div className="availability-tag">
