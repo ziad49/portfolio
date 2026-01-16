@@ -3,17 +3,14 @@ pipeline {
     tools { nodejs 'node' }
     stages {
         stage('Récupération') {
-            steps { 
-                checkout scm 
-                bat 'dir src /s' 
-            }
+            steps { checkout scm }
         }
         stage('Installation') {
             steps { bat 'npm install' }
         }
         stage('Tests Unitaires') {
             steps { 
-                bat 'npm test -- --watchAll=false' 
+                bat 'npm test' 
             }
         }
     }
