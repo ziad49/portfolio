@@ -1,17 +1,31 @@
 pipeline {
     agent any
-    tools { nodejs 'node' }
+
     stages {
-        stage('Récupération') {
-            steps { checkout scm }
-        }
-        stage('Installation') {
-            steps { bat 'npm install' }
-        }
-        stage('Tests Unitaires') {
-            steps { 
-                bat 'npm test' 
+        stage('Checkout') {
+            steps {
+                checkout scm
             }
+        }
+
+        stage('Install') {
+            steps {
+                bat 'npm ci'
+            }
+        }
+
+        stage('Unit Tests') {
+            steps {
+                // Génère junit.xml via variables d'env
+                bat 'set CI=true&& set JEST_JUNIT_OUTPUT_DIR=reports/junit&& set JEST_JUNIT_OUTPUT_NAME=junit.xml&& npm run test:ci'
+            }
+        }
+    }
+
+    post {
+        always {
+            // Publier les résultats (même si tests échouent)
+            junit 'reports/junit/*.xml'
         }
     }
 }
