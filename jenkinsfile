@@ -16,15 +16,18 @@ pipeline {
 
         stage('Unit Tests') {
             steps {
-                // Génère junit.xml via variables d'env
-                bat 'set CI=true&& set JEST_JUNIT_OUTPUT_DIR=reports/junit&& set JEST_JUNIT_OUTPUT_NAME=junit.xml&& npm run test:ci'
+                bat '''
+                set CI=true
+                set JEST_JUNIT_OUTPUT_DIR=reports/junit
+                set JEST_JUNIT_OUTPUT_NAME=junit.xml
+                npm run test:ci
+                '''
             }
         }
     }
 
     post {
         always {
-            // Publier les résultats (même si tests échouent)
             junit 'reports/junit/*.xml'
         }
     }
