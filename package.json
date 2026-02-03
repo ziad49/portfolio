@@ -18,7 +18,7 @@
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
-    "test:ci": "node run-tests-ci.js",
+    "test:ci": "set CI=true&& react-scripts test --watchAll=false --testResultsProcessor=jest-junit",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
