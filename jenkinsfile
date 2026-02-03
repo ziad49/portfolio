@@ -1,33 +1,51 @@
 pipeline {
-    agent any
+  agent any
 
-    stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-
-        stage('Install') {
-            steps {
-                bat 'npm ci'
-            }
-        }
-
-        stage('Unit Tests') {
-            steps {
-                bat '''
-                set JEST_JUNIT_OUTPUT_DIR=reports/junit
-                set JEST_JUNIT_OUTPUT_NAME=junit.xml
-                npm run test:ci
-                '''
-            }
-        }
+  stages {
+    stage('Checkout') {
+      steps {
+        checkout scm
+      }
     }
 
-    post {
-        always {
-            junit 'reports/junit/*.xml'
-        }
+    stage('Debug path') {
+      steps {
+        bat '''
+        echo ===== ROOT CONTENT =====
+        dir
+        echo ===== IF SRC EXISTS HERE =====
+        if exist src (echo SRC FOUND) else (echo SRC NOT FOUND)
+        '''
+      }
     }
+
+    stage('Install + Test (in project folder)') {
+      steps {
+        // IMPORTANT: on force l’exécution dans le bon dossier
+        // Si ton projet React est à la racine, laisse "."
+        // Si ton projet React est dans un sous-dossier, remplace "." par le nom du dossier (ex: "portfolio" ou "frontend")
+        dir('.') {
+          bat '''
+          echo ===== INSIDE PROJECT DIR =====
+          cd
+          dir
+          dir src
+
+          npm ci
+
+          set JEST_JUNIT_OUTPUT_DIR=reports/junit
+          set JEST_JUNIT_OUTPUT_NAME=junit.xml
+
+          set CI=true&& react-scripts test --watchAll=false --testResultsProcessor=jest-junit
+          '''
+        }
+      }
+    }
+  }
+
+  post {
+    always {
+      junit 'reports/junit/*.xml'
+    }
+  }
 }
