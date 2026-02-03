@@ -21,9 +21,6 @@ pipeline {
 
     stage('Install + Test (in project folder)') {
       steps {
-        // IMPORTANT: on force l’exécution dans le bon dossier
-        // Si ton projet React est à la racine, laisse "."
-        // Si ton projet React est dans un sous-dossier, remplace "." par le nom du dossier (ex: "portfolio" ou "frontend")
         dir('.') {
           bat '''
           echo ===== INSIDE PROJECT DIR =====
