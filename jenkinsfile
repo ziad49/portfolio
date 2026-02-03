@@ -16,10 +16,13 @@ pipeline {
 
         stage('Unit Tests') {
             steps {
-                bat 'npm run test:ci'
+                bat '''
+                set JEST_JUNIT_OUTPUT_DIR=reports/junit
+                set JEST_JUNIT_OUTPUT_NAME=junit.xml
+                npm run test:ci
+                '''
             }
         }
-
     }
 
     post {
