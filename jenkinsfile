@@ -1,12 +1,21 @@
 pipeline {
   agent any
 
+  environment {
+    // Frontend
+    FRONTEND_JUNIT_DIR = "reports/junit"
+    FRONTEND_JUNIT_FILE = "junit.xml"
+
+    // Backend
+    BACKEND_JUNIT_DIR = "server/reports/junit"
+    BACKEND_JUNIT_FILE = "junit.xml"
+  }
+
   stages {
-    stage('Checkout') {
-      steps {
-        checkout scm
-      }
-    }
+
+    /* ==========================
+       FRONTEND
+       ========================== */
 
     stage('Frontend - Install') {
       steps {
@@ -16,29 +25,55 @@ pipeline {
 
     stage('Frontend - Tests') {
       steps {
-        
-        bat 'set JEST_JUNIT_OUTPUT_DIR=reports/junit&& set JEST_JUNIT_OUTPUT_NAME=junit.xml&& npm run test:ci'
+        bat '''
+          set CI=true
+          set JEST_JUNIT_OUTPUT_DIR=%FRONTEND_JUNIT_DIR%
+          set JEST_JUNIT_OUTPUT_NAME=%FRONTEND_JUNIT_FILE%
+          npm test -- --watchAll=false --runTestsByPath src/App.test.js --testResultsProcessor=jest-junit
+        '''
       }
     }
 
+    /* ==========================
+       BACKEND
+       ========================== */
+
     stage('Backend - Install') {
       steps {
-        bat 'cd server && npm ci'
+        dir('server') {
+          bat 'npm ci'
+        }
       }
     }
 
     stage('Backend - Tests') {
       steps {
-       
-        bat 'cd server && npm test'
+        dir('server') {
+          bat '''
+            set JEST_JUNIT_OUTPUT_DIR=reports/junit
+            set JEST_JUNIT_OUTPUT_NAME=junit.xml
+            npm test
+          '''
+        }
       }
     }
   }
 
   post {
     always {
-      junit allowEmptyResults: true, testResults: 'reports/junit/*.xml, server/reports/junit/*.xml'
-      archiveArtifacts allowEmptyArchive: true, artifacts: 'reports/junit/*.xml, server/reports/junit/*.xml'
+      // Rapports Frontend
+      junit allowEmptyResults: true, testResults: 'reports/junit/junit.xml'
+
+      // Rapports Backend
+      junit allowEmptyResults: true, testResults: 'server/reports/junit/junit.xml'
+    }
+
+    success {
+      echo 'Pipeline terminé avec succès'
+    }
+
+    failure {
+      echo 'Échec du pipeline'
     }
   }
 }
