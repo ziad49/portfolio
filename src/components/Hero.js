@@ -6,7 +6,7 @@ const Hero = () => {
   const profile = getProfileData(new Date().getFullYear());
 
   return (
-    <section className="hero-container">
+    <section id="home" className="hero-container">
       <div className="hero-content-wrapper">
         <div className="hero-text">
           <h1 className="name-title">{profile.name}</h1>
@@ -15,7 +15,7 @@ const Hero = () => {
           <div className="inline-flex items-center bg-green-100 text-green-700 text-sm font-bold px-4 py-1.5 rounded-full mb-6 border border-green-200 shadow-sm">
             {profile.status}
           </div>
-          
+
           <p className="description-text">
             Étudiant en école d’ingénieur, passionné par le développement des logiciels et la création de
             solutions technologiques. Mon objectif est de m’investir pleinement dans les missions qui

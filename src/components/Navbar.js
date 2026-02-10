@@ -4,22 +4,42 @@ const Navbar = () => {
   const [activeSection, setActiveSection] = useState('home');
 
   
-  useEffect(() => {
-    const handleScroll = () => {
-      const sections = ['home', 'experience', 'projects', 'expertise', 'contact'];
-      const scrollPosition = window.scrollY + 200;
+    useEffect(() => {
+    const sections = ["home", "experience", "projects", "expertise", "contact"];
+    const navOffset = 120; // hauteur navbar + marge
 
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element && scrollPosition >= element.offsetTop && scrollPosition < element.offsetTop + element.offsetHeight) {
-          setActiveSection(section);
+    const handleScroll = () => {
+    const navOffset = 120;
+    const scrollPos = window.scrollY + navOffset;
+
+    // ✅ Si on est tout en bas, on force "contact"
+    const nearBottom =
+        window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 10;
+
+    if (nearBottom) {
+        setActiveSection("contact");
+        return;
+    }
+
+    let current = "home";
+    for (const section of sections) {
+        const el = document.getElementById(section);
+        if (!el) continue;
+
+        if (el.offsetTop <= scrollPos) {
+        current = section;
         }
-      }
+    }
+
+    setActiveSection(current);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+
+    handleScroll(); // important au chargement
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+
 
   
   const getLinkStyle = (section) => {
