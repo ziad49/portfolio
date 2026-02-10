@@ -1,21 +1,7 @@
 pipeline {
   agent any
 
-  environment {
-    // Frontend
-    FRONTEND_JUNIT_DIR = "reports/junit"
-    FRONTEND_JUNIT_FILE = "junit.xml"
-
-    // Backend
-    BACKEND_JUNIT_DIR = "server/reports/junit"
-    BACKEND_JUNIT_FILE = "junit.xml"
-  }
-
   stages {
-
-    /* ==========================
-       FRONTEND
-       ========================== */
 
     stage('Frontend - Install') {
       steps {
@@ -27,16 +13,13 @@ pipeline {
       steps {
         bat '''
           set CI=true
-          set JEST_JUNIT_OUTPUT_DIR=%FRONTEND_JUNIT_DIR%
-          set JEST_JUNIT_OUTPUT_NAME=%FRONTEND_JUNIT_FILE%
-          npm test -- --watchAll=false --runTestsByPath src/App.test.js --testResultsProcessor=jest-junit
+          set JEST_JUNIT_OUTPUT_DIR=reports/junit
+          set JEST_JUNIT_OUTPUT_NAME=junit.xml
+
+          npm test -- --watchAll=false --testPathPattern=App.test.js --testResultsProcessor=jest-junit
         '''
       }
     }
-
-    /* ==========================
-       BACKEND
-       ========================== */
 
     stage('Backend - Install') {
       steps {
@@ -61,19 +44,8 @@ pipeline {
 
   post {
     always {
-      // Rapports Frontend
       junit allowEmptyResults: true, testResults: 'reports/junit/junit.xml'
-
-      // Rapports Backend
       junit allowEmptyResults: true, testResults: 'server/reports/junit/junit.xml'
-    }
-
-    success {
-      echo 'Pipeline terminé avec succès'
-    }
-
-    failure {
-      echo 'Échec du pipeline'
     }
   }
 }
