@@ -5,6 +5,7 @@ import ExperienceSection from './components/ExperienceSection';
 import ProjectsSection from './components/ProjectsSection';
 import ExpertiseSection from './components/ExpertiseSection';
 import ContactSection from './components/ContactSection';
+import ContactForm from "./components/ContactForm";
 
 import './App.css';
 
@@ -19,6 +20,7 @@ function App() {
         <ProjectsSection />
         <ExpertiseSection />
         <ContactSection />
+        <ContactForm />
       </main>
     </div>
   );

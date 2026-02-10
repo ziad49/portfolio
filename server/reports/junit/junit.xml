@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="3" failures="0" errors="0" time="0.53">
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2026-02-10T12:12:25" time="0.476" tests="3">
+    <testcase classname=" POST /api/contact -&gt; 200 et enregistre un message" name=" POST /api/contact -&gt; 200 et enregistre un message" time="0.046">
+    </testcase>
+    <testcase classname=" POST /api/contact -&gt; 400 si champs manquants" name=" POST /api/contact -&gt; 400 si champs manquants" time="0.004">
+    </testcase>
+    <testcase classname=" POST /api/contact -&gt; 400 si email invalide" name=" POST /api/contact -&gt; 400 si email invalide" time="0.004">
+    </testcase>
+  </testsuite>
+</testsuites>

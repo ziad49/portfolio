@@ -45,4 +45,20 @@ pipeline {
       junit 'reports/junit/*.xml'
     }
   }
+
+    stage('Backend - Tests') {
+    steps {
+    dir('server') {
+      bat 'npm ci'
+      bat 'set DATA_FILE=data\\messages.test.json&& npm test'
+    }
+    }
+    }
+    
+    post {
+    always {
+        junit 'server/reports/junit/*.xml'
+    }
+    }
+
 }
