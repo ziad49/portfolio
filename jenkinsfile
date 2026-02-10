@@ -2,40 +2,57 @@ pipeline {
   agent any
 
   stages {
-
-    stage('Frontend - Install') {
+    stage('Checkout') {
       steps {
-        bat 'npm ci'
+        checkout scm
       }
     }
 
-    stage('Frontend - Tests') {
+    stage('Debug path') {
       steps {
         bat '''
-          set CI=true
-          set JEST_JUNIT_OUTPUT_DIR=reports/junit
-          set JEST_JUNIT_OUTPUT_NAME=junit.xml
-
-          npm test -- --watchAll=false --testPathPattern=App.test.js --testResultsProcessor=jest-junit
+        echo ===== ROOT CONTENT =====
+        dir
+        echo ===== IF SRC EXISTS HERE =====
+        if exist src (echo SRC FOUND) else (echo SRC NOT FOUND)
         '''
       }
     }
 
-    stage('Backend - Install') {
+    stage('Frontend - Install + Tests') {
       steps {
-        dir('server') {
-          bat 'npm ci'
+        dir('.') {
+          bat '''
+          echo ===== INSIDE PROJECT DIR =====
+          cd
+          dir
+          dir src
+
+          npm ci
+
+          set JEST_JUNIT_OUTPUT_DIR=reports/junit
+          set JEST_JUNIT_OUTPUT_NAME=junit.xml
+
+          set CI=true&& react-scripts test --watchAll=false --testResultsProcessor=jest-junit
+          '''
         }
       }
     }
 
-    stage('Backend - Tests') {
+    stage('Backend - Install + Tests') {
       steps {
         dir('server') {
           bat '''
-            set JEST_JUNIT_OUTPUT_DIR=reports/junit
-            set JEST_JUNIT_OUTPUT_NAME=junit.xml
-            npm test
+          echo ===== INSIDE SERVER DIR =====
+          cd
+          dir
+
+          npm ci
+
+          set JEST_JUNIT_OUTPUT_DIR=reports/junit
+          set JEST_JUNIT_OUTPUT_NAME=junit.xml
+
+          npm test
           '''
         }
       }
@@ -44,8 +61,12 @@ pipeline {
 
   post {
     always {
-      junit allowEmptyResults: true, testResults: 'reports/junit/junit.xml'
-      junit allowEmptyResults: true, testResults: 'server/reports/junit/junit.xml'
+      // Frontend JUnit
+      junit allowEmptyResults: true, testResults: 'reports/junit/*.xml'
+      // Backend JUnit
+      junit allowEmptyResults: true, testResults: 'server/reports/junit/*.xml'
+      // Optionnel: archive des rapports
+      archiveArtifacts allowEmptyArchive: true, artifacts: 'reports/junit/*.xml, server/reports/junit/*.xml'
     }
   }
 }
