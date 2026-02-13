@@ -1,6 +1,7 @@
 import React from 'react';
 import { MapPin, Mail, Phone } from 'lucide-react'; // Import des icônes
 import { getProfileData } from '../logic';
+import photo from "../assets/profil.png";
 
 const Hero = () => {
   const profile = getProfileData(new Date().getFullYear());
@@ -43,7 +44,7 @@ const Hero = () => {
         {/* Le cercle avec les initiales, sans les badges de build */}
         <div className="profile-section">
           <div className="avatar-circle">
-            <span>ZF</span>
+            <img src={photo} alt="Ziad Freij" className="avatar-img" />
           </div>
         </div>
       </div>
