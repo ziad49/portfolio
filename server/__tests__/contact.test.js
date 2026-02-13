@@ -1,5 +1,6 @@
 const request = require("supertest");
 const fs = require("fs");
+process.env.ADMIN_TOKEN = "ZIAD_ADMIN_TOKEN";
 const { app, DATA_FILE } = require("../app");
 
 beforeEach(() => {

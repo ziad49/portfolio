@@ -1,1 +1,18 @@
-[]
+[
+  {
+    "id": "7906ca13-ffd7-4a31-99d5-692c580856d7",
+    "name": "ziad",
+    "email": "ziad@gmail.com",
+    "message": "bonjour",
+    "createdAt": "2026-02-13T15:15:13.670Z",
+    "read": false
+  },
+  {
+    "id": "55ab9c38-7ecb-4e1c-9bc2-3198f56b06cd",
+    "name": "cta",
+    "email": "cta@gmail.com",
+    "message": "bonsoir",
+    "createdAt": "2026-02-13T15:15:33.890Z",
+    "read": false
+  }
+]
