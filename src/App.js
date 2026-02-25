@@ -7,7 +7,10 @@ import ExperienceSection from "./components/ExperienceSection";
 import ProjectsSection from "./components/ProjectsSection";
 import ExpertiseSection from "./components/ExpertiseSection";
 import ContactForm from "./components/ContactForm";
+
+import AdminLayout from "./components/AdminLayout";
 import AdminMessages from "./components/AdminMessages";
+import AdminDashboard from "./components/AdminDashboard";
 
 import "./App.css";
 
@@ -31,7 +34,13 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<PortfolioPage />} />
-        <Route path="/admin" element={<AdminMessages />} />
+
+        {/* Layout admin */}
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<AdminMessages />} /> {/* /admin */}
+          <Route path="messages" element={<AdminMessages />} /> {/* /admin/messages */}
+          <Route path="dashboard" element={<AdminDashboard />} /> {/* /admin/dashboard */}
+        </Route>
       </Routes>
     </BrowserRouter>
   );

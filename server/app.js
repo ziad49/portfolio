@@ -111,5 +111,34 @@ app.delete("/api/messages/:id", requireAdmin, (req, res) => {
   res.json({ success: true });
 });
 
+// Admin - statistiques
+app.get("/api/admin/stats", requireAdmin, (req, res) => {
+  const all = readMessages();
+
+  const total = all.length;
+  const readCount = all.filter((m) => m.read === true).length;
+  const unread = total - readCount;
+
+  // dernier message
+  const sorted = [...all].sort(
+    (a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0)
+  );
+  const lastMessageAt = sorted[0]?.createdAt || null;
+
+  // par mois: YYYY-MM
+  const byMonthMap = {};
+  for (const m of all) {
+    const d = new Date(m.createdAt || Date.now());
+    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+    byMonthMap[key] = (byMonthMap[key] || 0) + 1;
+  }
+
+  const byMonth = Object.keys(byMonthMap)
+    .sort()
+    .map((month) => ({ month, count: byMonthMap[month] }));
+
+  res.json({ total, read: readCount, unread, lastMessageAt, byMonth });
+});
+
 
 module.exports = { app, DATA_FILE, readMessages, saveMessages };
