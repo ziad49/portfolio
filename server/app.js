@@ -137,7 +137,7 @@ app.get("/api/admin/stats", requireAdmin, (req, res) => {
     .sort()
     .map((month) => ({ month, count: byMonthMap[month] }));
 
-  res.json({ total, read: readCount, unread, lastMessageAt, byMonth });
+  res.json({ total, readCount, unread, lastMessageAt, byMonth });
 });
 
 
