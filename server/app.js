@@ -45,8 +45,99 @@ function saveMessages(messages) {
   fs.writeFileSync(DATA_FILE, JSON.stringify(messages, null, 2), "utf-8");
 }
 
+const https = require("https");
+
+function fetchJson(url, headers = {}) {
+  return new Promise((resolve, reject) => {
+    const req = https.request(url, { headers }, (res) => {
+      let data = "";
+      res.on("data", (chunk) => (data += chunk));
+      res.on("end", () => {
+        try {
+          const json = JSON.parse(data || "{}");
+          if (res.statusCode >= 400) {
+            return reject(new Error(json?.message || `HTTP ${res.statusCode}`));
+          }
+          resolve(json);
+        } catch (e) {
+          reject(e);
+        }
+      });
+    });
+    req.on("error", reject);
+    req.end();
+  });
+}
+
+function mapReposToProjects(repos) {
+  return repos
+    .filter((r) => !r.fork) 
+    .map((r) => ({
+      id: r.id,
+      name: r.name,
+      description: r.description || "",
+      url: r.html_url,
+      homepage: r.homepage || "",
+      language: r.language || "",
+      stars: r.stargazers_count || 0,
+      updatedAt: r.updated_at,
+    }))
+    .sort((a, b) => {
+      
+      if (b.stars !== a.stars) return b.stars - a.stars;
+      return new Date(b.updatedAt) - new Date(a.updatedAt);
+    });
+}
+
+module.exports.mapReposToProjects = mapReposToProjects; 
+
 app.get("/api/health", (req, res) => {
   res.json({ status: "OK", message: "Backend is running" });
+});
+
+// Public - projets GitHub (automatique)
+app.get("/api/github/projects", (req, res) => {
+  const username = "ziad49"; 
+
+  const options = {
+    hostname: "api.github.com",
+    path: `/users/${username}/repos?per_page=20&sort=updated`,
+    method: "GET",
+    headers: {
+      "User-Agent": "portfolio-ziad",
+      "Accept": "application/vnd.github+json",
+    },
+  };
+
+  https
+    .get(options, (r) => {
+      let data = "";
+      r.on("data", (chunk) => (data += chunk));
+      r.on("end", () => {
+        try {
+          const repos = JSON.parse(data);
+
+          if (!Array.isArray(repos)) {
+            return res.status(500).json({ error: "Réponse GitHub invalide", raw: repos });
+          }
+
+          const projects = repos.map((repo) => ({
+            name: repo.name,
+            description: repo.description,
+            language: repo.language,
+            stars: repo.stargazers_count,
+            url: repo.html_url,
+            homepage: repo.homepage,
+            updatedAt: repo.updated_at,
+          }));
+
+          res.json({ source: "github", projects });
+        } catch (e) {
+          res.status(500).json({ error: "Impossible de parser GitHub" });
+        }
+      });
+    })
+    .on("error", () => res.status(500).json({ error: "GitHub indisponible" }));
 });
 
 app.post("/api/contact", (req, res) => {

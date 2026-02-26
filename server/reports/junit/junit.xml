@@ -1,27 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="9" failures="0" errors="0" time="0.738">
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2026-02-26T11:33:27" time="0.469" tests="2">
-    <testcase classname=" GET /api/admin/stats -&gt; 401 sans token" name=" GET /api/admin/stats -&gt; 401 sans token" time="0.018">
+<testsuites name="jest tests" tests="11" failures="0" errors="0" time="0.907">
+  <testsuite name="GitHub Projects API" errors="0" failures="0" skipped="0" timestamp="2026-02-26T12:49:34" time="0.507" tests="2">
+    <testcase classname="GitHub Projects API GET /api/github/projects -&gt; 200 et renvoie des projets formatés" name="GitHub Projects API GET /api/github/projects -&gt; 200 et renvoie des projets formatés" time="0.04">
     </testcase>
-    <testcase classname=" GET /api/admin/stats -&gt; 200 avec token + stats cohérentes" name=" GET /api/admin/stats -&gt; 200 avec token + stats cohérentes" time="0.029">
-    </testcase>
-  </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2026-02-26T11:33:27" time="0.1" tests="4">
-    <testcase classname=" GET /api/messages -&gt; 401 sans token" name=" GET /api/messages -&gt; 401 sans token" time="0.003">
-    </testcase>
-    <testcase classname=" GET /api/messages -&gt; 200 avec token et retourne les messages" name=" GET /api/messages -&gt; 200 avec token et retourne les messages" time="0.01">
-    </testcase>
-    <testcase classname=" PATCH /api/messages/:id -&gt; marque comme lu" name=" PATCH /api/messages/:id -&gt; marque comme lu" time="0.007">
-    </testcase>
-    <testcase classname=" DELETE /api/messages/:id -&gt; supprime" name=" DELETE /api/messages/:id -&gt; supprime" time="0.006">
+    <testcase classname="GitHub Projects API GET /api/github/projects -&gt; 500 si GitHub est indisponible" name="GitHub Projects API GET /api/github/projects -&gt; 500 si GitHub est indisponible" time="0.037">
     </testcase>
   </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2026-02-26T11:33:28" time="0.088" tests="3">
-    <testcase classname=" POST /api/contact -&gt; 200 et enregistre un message" name=" POST /api/contact -&gt; 200 et enregistre un message" time="0.01">
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2026-02-26T12:49:35" time="0.106" tests="2">
+    <testcase classname=" GET /api/admin/stats -&gt; 401 sans token" name=" GET /api/admin/stats -&gt; 401 sans token" time="0.006">
     </testcase>
-    <testcase classname=" POST /api/contact -&gt; 400 si champs manquants" name=" POST /api/contact -&gt; 400 si champs manquants" time="0.003">
+    <testcase classname=" GET /api/admin/stats -&gt; 200 avec token + stats cohérentes" name=" GET /api/admin/stats -&gt; 200 avec token + stats cohérentes" time="0.031">
     </testcase>
-    <testcase classname=" POST /api/contact -&gt; 400 si email invalide" name=" POST /api/contact -&gt; 400 si email invalide" time="0.003">
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2026-02-26T12:49:35" time="0.104" tests="4">
+    <testcase classname=" GET /api/messages -&gt; 401 sans token" name=" GET /api/messages -&gt; 401 sans token" time="0.008">
+    </testcase>
+    <testcase classname=" GET /api/messages -&gt; 200 avec token et retourne les messages" name=" GET /api/messages -&gt; 200 avec token et retourne les messages" time="0.011">
+    </testcase>
+    <testcase classname=" PATCH /api/messages/:id -&gt; marque comme lu" name=" PATCH /api/messages/:id -&gt; marque comme lu" time="0.008">
+    </testcase>
+    <testcase classname=" DELETE /api/messages/:id -&gt; supprime" name=" DELETE /api/messages/:id -&gt; supprime" time="0.007">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2026-02-26T12:49:35" time="0.086" tests="3">
+    <testcase classname=" POST /api/contact -&gt; 200 et enregistre un message" name=" POST /api/contact -&gt; 200 et enregistre un message" time="0.009">
+    </testcase>
+    <testcase classname=" POST /api/contact -&gt; 400 si champs manquants" name=" POST /api/contact -&gt; 400 si champs manquants" time="0.008">
+    </testcase>
+    <testcase classname=" POST /api/contact -&gt; 400 si email invalide" name=" POST /api/contact -&gt; 400 si email invalide" time="0.004">
     </testcase>
   </testsuite>
 </testsuites>
