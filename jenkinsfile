@@ -65,7 +65,7 @@ pipeline {
       junit allowEmptyResults: true, testResults: 'reports/junit/*.xml'
       // Backend JUnit
       junit allowEmptyResults: true, testResults: 'server/reports/junit/*.xml'
-      // Optionnel: archive des rapports
+      // Archive des rapports
       archiveArtifacts allowEmptyArchive: true, artifacts: 'reports/junit/*.xml, server/reports/junit/*.xml'
     }
   }
